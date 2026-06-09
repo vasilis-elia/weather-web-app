@@ -1,0 +1,210 @@
+#results {
+    width: 62%;
+    margin: 1% auto;
+    font-size: 0.9rem;
+    margin: 0 auto;
+}
+
+.weather-line {
+    background-color: rgb(0, 0, 0, 1);
+    height: 2px;
+    margin: 2% auto;
+    border: none;
+}
+
+.tab-content {
+    background-color: white;
+}
+
+/* For centering the image in the <td>. */
+#weather-image {
+    vertical-align: middle;
+}
+
+#weather-description {
+    margin: 0;
+}
+
+#weather-temperature {
+    font-size: 3em;
+    margin: 0;
+}
+
+#weather-high-low-temps {
+    margin: 0;
+}
+
+#temp-low {
+    color: blue;
+}
+
+#temp-high {
+    color: red;
+}
+
+#vertical-line {
+    margin: 0 3%;
+}
+
+/* When we select a tab (right now or next 24 hours). */
+/* !important so boostrap rules get overriden */
+.focused-tab {
+    background-color: white !important;
+    color: blue !important;
+}
+
+.out-of-focus-tab {
+    background-color: rgb(23, 107, 217);
+    color: white;
+}
+
+/* So the gap between tabs and content is removed. */
+.nav-tabs {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+#right-now-tab:active,
+#next24-tab:active {
+    color: inherit;
+}
+
+#right-now-tab:hover,
+#next24-tab:hover {
+    color: inherit;
+}
+
+#current-weather-container {
+    margin: 1% 2%;
+    max-width: 96%;
+    /* Need to make reduce total width because when it becomes 12 rows from boostrap total margin becomes comes out of the div */
+}
+
+.view-btn {
+    width: auto;
+    height: auto;
+    background-color: green;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3% 8%;
+    margin: auto;
+    display: none;
+}
+
+.view-modal-dialog {
+    top: 25%;
+    left: 7%;
+}
+
+.view-modal-content {
+    width: 70%;
+    height: auto;
+}
+
+.view-modal-header {
+    padding: 4%;
+    font-size: 1.2rem;
+}
+
+
+.view-modal-title {
+    font-size: 0.9rem !important;
+    margin: 0;
+}
+
+.view-modal-wind-speed {
+    padding-right: 6%;
+}
+
+.view-x-button {
+    width: 1%;
+    height: auto;
+    padding: 2% !important;
+    margin-right: 0.1% !important;
+}
+
+.view-modal-body {
+    font-size: 0.8rem;
+}
+
+.view-modal-description,
+.view-model-icon {
+    padding: 10% 0;
+    margin: 0;
+}
+
+.view-modal-footer {
+    padding: 3%;
+}
+
+.view-close-btn {
+    font-size: 0.7rem !important;
+    background-color: rgb(212, 21, 21);
+    border: none;
+}
+
+
+@media (max-width: 992px) {
+    #results {
+        font-size: 0.7rem;
+    }
+
+    .view-btn {
+        font-size: 0.6rem;
+    }
+
+
+    .view-modal-title {
+        font-size: 0.9rem !important;
+
+    }
+}
+
+@media (max-width: 767px) {
+    #results {
+        font-size: 0.9rem;
+    }
+
+    .view-btn {
+        font-size: 0.6rem;
+    }
+
+
+    .view-modal-title {
+        font-size: 0.9rem !important;
+    }
+
+    #next24-table {
+        font-size: 0.75em;
+    }
+}
+
+@media (max-width: 576px) {
+    #results {
+        font-size: 0.7rem;
+    }
+
+    .view-btn {
+        font-size: 0.5rem;
+    }
+
+    .view-modal-content {
+        font-size: 2rem;
+    }
+
+    .view-modal-title {
+        font-size: 0.8rem !important;
+    }
+
+    #next24-table {
+        font-size: 0.59em;
+    }
+}
+
+@media (max-width: 400px) {
+    #results {
+        font-size: 0.6rem;
+    }
+}

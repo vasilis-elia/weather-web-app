@@ -1,0 +1,63 @@
+/* So all the margin is taken care using boostrap grid system. */
+#current-weather-container,
+#map-container {
+    margin: 0;
+}
+
+#map {
+    padding: 2%;
+}
+
+.map {
+    height: 350px;
+    width: 100%;
+}
+
+div.card-header {
+    padding: 0;
+    background-color: 248, 248, 248;
+}
+
+p#gauges-title,
+p#charts-title {
+    margin: 0;
+    padding: 0.2% 2%;
+    text-align: left;
+}
+
+#gauges-card-container,
+#charts-card-container {
+    padding: 0;
+    margin: 0;
+    height: auto;
+}
+
+#gauges-card {
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#gauges-card-body {
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.gauges-container {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#gauge-max-temp,
+#gauge-max-humidity,
+#gauge-max-pressure {
+    padding: 10px;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}

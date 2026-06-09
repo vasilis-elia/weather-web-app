@@ -1,0 +1,281 @@
+<!--
+Name: Vasilis Ilia
+ID: UC1033953
+Assignment 1
+-->
+
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 1</title>
+
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/ol@v10.4.0/dist/ol.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="main.js" defer></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.4.0/ol.css" type="text/css">
+    <link rel="stylesheet" href="css/style-form.css">
+    <link rel="stylesheet" href="css/weather-info-style.css">
+    <link rel="stylesheet" href="css/graphs-style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div id="grayscreen" class="hidden"></div>
+    <div id="custom-alert">
+        <p id="custom-alert-message"></p>
+        <button onclick="closeAlert()">OK</button>
+    </div>
+    <div id="logs" class="hidden">
+        <p>Last 5 requests</p>
+        <button id="x-button" onclick="closeLogsWindow()" type="button"><i class="fa-solid fa-x"></i></button>
+        <hr class="top-line">
+        <div id="table-container">
+            <table id="logs-table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Region</th>
+                        <th>City</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+        <hr class="bottom-line">
+        <button id="close-button" onclick="closeLogsWindow()" type="button">Close</button>
+    </div>
+    <div id="header">
+        <p id="main-heading">Advanced Weather Dashboard</p>
+        <p id="main-description">Stay ahead of the weather - Make informed decisions</p>
+    </div>
+
+    <div id="form-container" class="container">
+        <form id="form">
+            <div class="row">
+                <div class="big-input col-lg-4 col-md-6 col-sm-12" id="select-container">
+                    <input id="region" class="form-control interactable" type="text" placeholder="Enter region"
+                        name="region" required>
+                    <p id="region-error" class="error-msg">Please enter your region!</p>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12" id="input-container">
+                    <select id="city" class="form-select interactable" name="city">
+                        <option value="">Select City</option>
+                        <option value="Nicosia">Nicosia</option>
+                        <option value="Limassol">Limassol</option>
+                        <option value="Larnaca">Larnaca</option>
+                        <option value="Paphos">Paphos</option>
+                        <option value="Famagusta">Famagusta</option>
+                        <option value="Kyrenia">Kyrenia</option>
+                    </select>
+                    <p id="city-error" class="error-msg">Please select your city!</p>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-sm-12" id="radio-buttons">
+                    <input class="form-check-input interactable" type="radio" id="celcius" name="degree_unit"
+                        value="celcius" checked>
+                    <label for="celcius">°C</label>
+                    <input class="form-check-input interactable" type="radio" id="far" name="degree_unit"
+                        value="fahrenheit">
+                    <label for="far">°F</label>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-sm-12 buttons">
+                    <button id="search" class="interactable" type="button"><i class="fa-solid fa-search"></i></button>
+                    <button id="clear" class="interactable" onclick="clearResults()" type="reset"><i
+                            class="fa-solid fa-ban"></i></button>
+                    <button id="log" class="interactable" type="button"><i class="fa-solid fa-server"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="results" class="hidden">
+        <hr class="weather-line">
+        <div id="weather-info">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link focused-tab active" id="right-now-tab" onclick="rightNowTab()"
+                        data-bs-toggle="tab" data-bs-target="#right-now" type="button" role="tab" aria-controls="home"
+                        aria-selected="true">Right Now</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link out-of-focus-tab" id="next24-tab" onclick="next24HoursTab()"
+                        data-bs-toggle="tab" data-bs-target="#next24" type="button" role="tab" aria-controls="next24"
+                        aria-selected="false">Next 24 hours</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="right-now" role="tabpanel" aria-labelledby="right-now-tab">
+                    <div class="row">
+                        <div id="current-weather-container" class="col-lg-6 col-md-6 col-sm-12">
+                            <div id="table-current-weather">
+                                <table id="current-weather-table" class="table table-striped class">
+                                    <thead>
+                                        <tr>
+                                            <td id="weather-image">
+                                                <img src="https://openweathermap.org/img/w/04n.png">
+                                            </td>
+                                            <td id="temperatures">
+                                                <p id="weather-description">clear sky in at Nicosia</p>
+                                                <p id="weather-temperature">28.49 °C</p>
+                                                <p id="weather-high-low-temps">
+                                                    <span id="temp-low">L:28.49 °C</span><span
+                                                        id="vertical-line">|</span><span id="temp-high">H:25.40
+                                                        °C</span>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Pressure</td>
+                                            <td id="pressure">test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Humidity</td>
+                                            <td id="humidity">test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Wind Speed</td>
+                                            <td id="wind-speed">test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cloud Cover</td>
+                                            <td id="cloud-cover">test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sunrise</td>
+                                            <td id="sunrise">test</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sunset</td>
+                                            <td id="sunset">test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div id="map-container" class="col-lg-6 col-md-6 col-sm-12">
+                            <div id="map" class="map">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="next24" role="tabpanel" aria-labelledby="next24-tab">
+                <div id="table-next24-container">
+                    <table id="next24-table" class="table table-striped class">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Summary</th>
+                                <th>Temp</th>
+                                <th>Cloud Cover</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="next24-table-body">
+                        </tbody>
+                    </table>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary view-btn" id="view-btn-prototype"
+                        data-bs-toggle="modal" data-bs-target="#view-modal-prototype">
+                        View
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="view-modal-prototype" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog view-modal-dialog">
+                            <div class="modal-content view-modal-content">
+                                <div class="modal-header view-modal-header">
+                                    <h1 class="fs-5 view-modal-title">Weather in Nicosia 23 Jul 2025 00:00</h1>
+                                    <button type="button" class="btn-close view-x-button" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="view-modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <img class="view-modal-icon" src="https://openweathermap.org/img/w/03d.png"
+                                                alt="Weather icon">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <p class="view-modal-description">Clear (clear sky)</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                            <b>Humidity</b>
+                                            <p class="view-modal-humidity">58%</p>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                            <b>Pressure</b>
+                                            <p class="view-modal-pressure">58%</p>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                            <b>Wind Speed</b>
+                                            <p class="view-modal-wind-speed">58%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer view-modal-footer">
+                                    <button type="button" class="btn btn-secondary view-close-btn"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="weather-line">
+        <div id="gauges-card-container">
+            <div class="card" id="gauges-card">
+                <div class="card-header">
+                    <p id="gauges-title">Weather extremes for</p>
+                </div>
+                <div class="card-body" id="gauges-card-body">
+                    <div class="row gauges-container">
+                        <div id="gauge-max-temp" class="col-lg-4 col-md-4 col-sm-12"></div>
+                        <div id="gauge-max-humidity" class="col-lg-4 col-md-4 col-sm-12"></div>
+                        <div id="gauge-max-pressure" class="col-lg-4 col-md-4 col-sm-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="weather-line">
+        <div id="charts-card-container">
+            <div class="card" id="charts-card">
+                <div class="card-header">
+                    <p id="charts-title">Weather Forecast for</p>
+                </div>
+                <div class="card-body" id="cards-card-body">
+                    <div class="row gauges-container">
+                        <div id="chart-temp" class="col-lg-4 col-md-4 col-sm-12"></div>
+                        <div id="chart-humidity" class="col-lg-4 col-md-4 col-sm-12"></div>
+                        <div id="chart-pressure" class="col-lg-4 col-md-4 col-sm-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
