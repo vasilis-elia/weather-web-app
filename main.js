@@ -1,5 +1,4 @@
 document.getElementById("search").addEventListener("click", validateForm);
-document.getElementById("log").addEventListener("click", retrieveLogs);
 document.getElementById("clear").addEventListener("clear", clearResults);
 
 let username = "vilia002";
@@ -39,12 +38,11 @@ function validateForm() {
     else
         cityError.style.display = "none";
 
-    // If both valid make API requets and log the request.
+    // If both valid make API requets.
     if (valid) {
         const formData = new FormData(document.querySelector("#form"));
         units = formData.get('degree_unit') === "celcius" ? "metric" : "imperial"; // Also saves prefered units for later.
 
-        logRequest(formData);
         makeNominatimRequest(formData);
     }
 }
@@ -194,40 +192,6 @@ function displayCurrentWeather() {
     document.getElementById("right-now-tab").click(); // Shows the right now tab when the user makes a search.
  
     display_map(); // Shows the map in the "Right Now" tab.
-}
-
-function logRequest(formData) {
-    formDataObj['username'] = username;
-    formDataObj['region'] = formData.get('region');
-    formDataObj['city'] = formData.get('city');
-    formDataObj['country'] = 'Cyprus';
-
-    const xhr = new XMLHttpRequest();
-
-    // Since we cannot send POST requests. We can use a parameter to specify whether we want to retrieve or insert data,
-    // false since we are inserting.
-    let dataRetrieval = "dataRetrieval=false";
-
-    let qData = dataRetrieval + '&jsonData=' + encodeURIComponent(JSON.stringify(formDataObj));
-    let url = "database_connect.php?" + qData;
-
-    //let url = "database_connect.php"; // For POST request.
-
-    xhr.open('GET', url);
-    //xhr.open('POST', url);
-    //xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState !== 4) return;
-
-        if (xhr.status >= 200 && xhr.status < 300) {
-            //let response = JSON.parse(xhr.responseText);
-            console.log(xhr.responseText);
-        } else {
-            console.log('Error: ', xhr);
-        }
-    }
-    xhr.send();
-    //xhr.send(JSON.stringify(formDataObj));
 }
 
 function retrieveLogs() {
